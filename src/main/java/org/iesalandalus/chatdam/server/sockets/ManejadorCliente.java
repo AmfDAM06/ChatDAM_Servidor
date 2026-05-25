@@ -29,6 +29,7 @@ public class ManejadorCliente implements Runnable {
     @Override
     public void run() {
         try {
+            servidor.broadcastMensaje("Servidor: ¡Un nuevo usuario se ha conectado al chat!", this);
             while (true) {
                 String mensajeRecibido = in.readUTF();
                 System.out.println("Mensaje recibido: " + mensajeRecibido);
