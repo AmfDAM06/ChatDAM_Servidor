@@ -19,12 +19,25 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String rol;
+
+    // Constructor vacio requerido por Hibernate
     public Usuario() {
     }
 
+    // Constructor de 3 parametros para la gestion de roles
+    public Usuario(String usuario, String password, String rol) {
+        this.usuario = usuario;
+        this.password = password;
+        this.rol = rol;
+    }
+
+    // Constructor de 2 parametros para mantener compatibilidad con codigo anterior
     public Usuario(String usuario, String password) {
         this.usuario = usuario;
         this.password = password;
+        this.rol = "EMPLEADO";
     }
 
     public Long getId() {
@@ -49,5 +62,13 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }
