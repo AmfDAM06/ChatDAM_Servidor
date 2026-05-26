@@ -23,8 +23,15 @@ public class AuthController {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsuario(request.getUsuario());
 
         if (usuarioOpt.isPresent() && usuarioOpt.get().getPassword().equals(request.getPassword())) {
-            // Devolvemos el rol en formato JSON puro para que el cliente lo lea
-            return ResponseEntity.ok("{\"rol\":\"" + usuarioOpt.get().getRol() + "\"}");
+            // AQUÍ ESTÁ EL CAMBIO DE SEGURIDAD:
+            // Si el rol es null, le asignamos "EMPLEADO" para evitar errores en el cliente
+            String rol = usuarioOpt.get().getRol();
+            if (rol == null || rol.isEmpty()) {
+                rol = "EMPLEADO";
+            }
+
+            // Devolvemos el JSON con el rol garantizado
+            return ResponseEntity.ok("{\"rol\":\"" + rol + "\"}");
         }
         return ResponseEntity.status(401).body("Credenciales incorrectas");
     }
@@ -34,7 +41,7 @@ public class AuthController {
         if (usuarioRepository.findByUsuario(request.getUsuario()).isPresent()) {
             return ResponseEntity.badRequest().body("El usuario ya existe");
         }
-        // El cliente ya enviará la contraseña cifrada, solo la guardamos con rol EMPLEADO
+        // Guardamos con rol EMPLEADO por defecto
         Usuario nuevoEmpleado = new Usuario(request.getUsuario(), request.getPassword(), "EMPLEADO");
         usuarioRepository.save(nuevoEmpleado);
         return ResponseEntity.ok("Empleado registrado correctamente");
