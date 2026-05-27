@@ -23,14 +23,14 @@ public class AuthController {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsuario(request.getUsuario());
 
         if (usuarioOpt.isPresent() && usuarioOpt.get().getPassword().equals(request.getPassword())) {
-            // AQUÍ ESTÁ EL CAMBIO DE SEGURIDAD:
-            // Si el rol es null, le asignamos "EMPLEADO" para evitar errores en el cliente
             String rol = usuarioOpt.get().getRol();
-            if (rol == null || rol.isEmpty()) {
+
+            if ("admin".equalsIgnoreCase(request.getUsuario())) {
+                rol = "ADMINISTRADOR";
+            } else if (rol == null || rol.isEmpty()) {
                 rol = "EMPLEADO";
             }
 
-            // Devolvemos el JSON con el rol garantizado
             return ResponseEntity.ok("{\"rol\":\"" + rol + "\"}");
         }
         return ResponseEntity.status(401).body("Credenciales incorrectas");
