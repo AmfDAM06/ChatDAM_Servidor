@@ -11,6 +11,11 @@ import java.util.List;
 
 public class ServidorChat implements Runnable {
 
+    //Ignorar esta clase, porque ahora hacemos multicast desde el cliente,
+    // el servidor solo se encarga de ser la API REST que conecta con la base de datos
+    // MySQL para guardar el historial y validar contraseñas
+
+
     private final int PUERTO_CHAT = 4444;
     private final List<ManejadorCliente> clientesConectados = new ArrayList<>();
     private final MensajeRepository mensajeRepository; // <-- Añadido
@@ -45,7 +50,6 @@ public class ServidorChat implements Runnable {
         }
     }
 
-    // Nuevo método para que el Manejador guarde el mensaje en la BD
     public synchronized void guardarMensajeEnBD(Mensaje mensaje) {
         mensajeRepository.save(mensaje);
     }
