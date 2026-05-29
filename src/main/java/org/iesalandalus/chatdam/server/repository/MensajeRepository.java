@@ -2,13 +2,10 @@ package org.iesalandalus.chatdam.server.repository;
 
 import org.iesalandalus.chatdam.server.model.Mensaje;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-@Repository
 public interface MensajeRepository extends JpaRepository<Mensaje, Long> {
 
+    // Este método le dice a MySQL: "Dame los 10 mensajes más recientes ordenados por fecha descendente"
     List<Mensaje> findTop10ByOrderByFechaDesc();
-
 }
